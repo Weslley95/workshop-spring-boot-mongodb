@@ -1,6 +1,7 @@
 package com.weslley.workshopmongo.resources;
 
 import com.weslley.workshopmongo.domain.User;
+import com.weslley.workshopmongo.dto.UserDTO;
 import com.weslley.workshopmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value="/users")
@@ -28,14 +30,17 @@ public class UserResource {
      */
     // @GetMapping or @RequestMapping(method = RequestMethod.GET)
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<User>> findAll() {
+    public ResponseEntity<List<UserDTO>> findAll() {
 
         // lista de usuarios, busca todo os usuarios no bd (service.findAll()) e add a list
         List<User> list = service.findAll();
 
+        // Converter para uma lista DTO, utilizando expressao lambda
+        List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
+
         // .ok() -> instanciar responseEntity
         // .body() -> corpo da mensagem
-        return ResponseEntity.ok().body(list);
+        return ResponseEntity.ok().body(listDto);
     }
 
 
