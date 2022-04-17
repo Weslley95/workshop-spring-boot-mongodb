@@ -5,6 +5,7 @@ import com.weslley.workshopmongo.dto.UserDTO;
 import com.weslley.workshopmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,9 +32,8 @@ public class UserResource {
     // @GetMapping or @RequestMapping(method = RequestMethod.GET)
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserDTO>> findAll() {
-
         // lista de usuarios, busca todo os usuarios no bd (service.findAll()) e add a list
-        List<User> list = service.findAll();
+        List<User> list = this.service.findAll();
 
         // Converter para uma lista DTO, utilizando expressao lambda
         List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
@@ -43,5 +43,24 @@ public class UserResource {
         return ResponseEntity.ok().body(listDto);
     }
 
+    /**
+     * Retornar usuario por id
+     * End point
+     *
+     * ResponseEntity -> Retornar objeto sofisticado, encapsular e retornar respostas HTTP, com cabecalhos, erros, etc
+     *
+     * @return obj
+     */
+    // @GetMapping or @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<UserDTO> findById(@PathVariable String id) {
 
+        // Instancia metodo da classe UserService
+        User obj = this.service.findById(id);
+
+        // .ok() -> instanciar responseEntity
+        // .body() -> corpo da mensagem
+        // obj convertido para UserDTO
+        return ResponseEntity.ok().body(new UserDTO(obj));
+    }
 }
