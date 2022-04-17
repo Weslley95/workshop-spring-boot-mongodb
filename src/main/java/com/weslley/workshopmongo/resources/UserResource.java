@@ -90,4 +90,22 @@ public class UserResource {
         // created() -> retorna 201
         return ResponseEntity.created(uri).build();
     }
+
+    /**
+     * Deleter usuario
+     * End point
+     *
+     * ResponseEntity -> Retornar objeto sofisticado, encapsular e retornar respostas HTTP, com cabecalhos, erros, etc
+     *
+     * @return noContent() -> 204
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+
+        // Instancia metodo da classe UserService
+        this.service.delete(id);
+
+        // noContent() -> Resposta com 204, realizar uma operacao e nao retornar nada
+        return ResponseEntity.noContent().build();
+    }
 }

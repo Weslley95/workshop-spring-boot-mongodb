@@ -50,6 +50,16 @@ public class UserService {
     }
 
     /**
+     * Delete user
+     * @param id
+     */
+    public void delete(String id) {
+        // Realizar busca do id, caso nao encontrar lanca excecao
+        findById(id);
+        this.repo.deleteById(id);
+    }
+
+    /**
      * Metodo que ira pegar um DTO e instaciar um usuario
      *
      * OBS: Adquado seria gerar o metodo na class UserDTO, porem, para instanciar um usuario
