@@ -4,12 +4,12 @@ import com.weslley.workshopmongo.domain.User;
 import com.weslley.workshopmongo.dto.UserDTO;
 import com.weslley.workshopmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +51,6 @@ public class UserResource {
      *
      * @return obj
      */
-    // @GetMapping or @RequestMapping(method = RequestMethod.GET)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<UserDTO> findById(@PathVariable String id) {
 
@@ -62,5 +61,33 @@ public class UserResource {
         // .body() -> corpo da mensagem
         // obj convertido para UserDTO
         return ResponseEntity.ok().body(new UserDTO(obj));
+    }
+
+    /**
+     * Inserir usuario
+     * End point
+     *
+     * ResponseEntity -> Retornar objeto sofisticado, encapsular e retornar respostas HTTP, com cabecalhos, erros, etc
+     *
+     * @return uri
+     */
+    // @RequestMapping(method = RequestMethod.POST) or @PostMapping
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Void> insert(@RequestBody UserDTO objDto) {
+
+        // Converter objDto para usuario
+        User obj = this.service.fromDTO(objDto);
+
+        obj = this.service.insert(obj);
+
+        // Retornar URL com novo recurco criado, uri pegar o endereco do novo objeto inserido
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(obj.getId())
+                .toUri();
+
+        // created() -> retorna 201
+        return ResponseEntity.created(uri).build();
     }
 }

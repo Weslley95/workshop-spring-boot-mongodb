@@ -17,12 +17,17 @@ public class UserDTO implements Serializable {
 
     /**
      * Contrutor para instanciar a partir do objeto
-     * @param obj
      */
     public UserDTO(User user) {
         this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
+    }
+
+    /**
+     * Contrutor para instanciar a partir do objeto
+     */
+    public UserDTO() {
     }
 
     // Getters and Setters
