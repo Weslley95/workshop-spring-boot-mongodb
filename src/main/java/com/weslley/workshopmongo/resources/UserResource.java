@@ -1,10 +1,10 @@
 package com.weslley.workshopmongo.resources;
 
+import com.weslley.workshopmongo.domain.Post;
 import com.weslley.workshopmongo.domain.User;
 import com.weslley.workshopmongo.dto.UserDTO;
 import com.weslley.workshopmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -130,5 +130,24 @@ public class UserResource {
 
         // created() -> retorna 201
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Retornar posts do usuario
+     * End point
+     *
+     * ResponseEntity -> Retornar objeto sofisticado, encapsular e retornar respostas HTTP, com cabecalhos, erros, etc
+     *
+     * @return List<Post>
+     */
+    @RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+
+        // Buscar usuario por id, retornando no obj
+        User obj = this.service.findById(id);
+
+        // .ok() -> instanciar responseEntity
+        // .body() -> corpo da mensagem
+        return ResponseEntity.ok().body(obj.getPosts());
     }
 }
