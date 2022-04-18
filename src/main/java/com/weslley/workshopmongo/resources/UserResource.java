@@ -108,4 +108,27 @@ public class UserResource {
         // noContent() -> Resposta com 204, realizar uma operacao e nao retornar nada
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * Update usuario
+     * End point
+     *
+     * ResponseEntity -> Retornar objeto sofisticado, encapsular e retornar respostas HTTP, com cabecalhos, erros, etc
+     *
+     * @return noContent() -> 204
+     */
+    //
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Void> update(@RequestBody UserDTO objDto, @PathVariable String id) {
+
+        // Converter objDto para usuario
+        User obj = this.service.fromDTO(objDto);
+
+        // Id da requisicao
+        obj.setId(id);
+        obj = this.service.update(obj);
+
+        // created() -> retorna 201
+        return ResponseEntity.noContent().build();
+    }
 }
