@@ -2,6 +2,7 @@ package com.weslley.workshopmongo.config;
 
 import com.weslley.workshopmongo.domain.Post;
 import com.weslley.workshopmongo.domain.User;
+import com.weslley.workshopmongo.dto.AuthorDTO;
 import com.weslley.workshopmongo.repository.PostRepository;
 import com.weslley.workshopmongo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +44,14 @@ public class Instantiation implements CommandLineRunner {
         var alex = new User(null, "Alex Green", "alex@gmail.com");
         var bob = new User(null, "Bob Grey", "bob@gmail.com");
 
+        // Salvar objetos na colecao de usuarios (salvar usuarios para ter ids proprios gerador pelo BD
+        userRepository.saveAll(Arrays.asList(maria, alex, bob));
 
         // Gerar carga inicial de posts
-        var post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu viagem", "Vou viajar para São Paulo. Abraços!", maria);
-        var post2 = new Post(null, sdf.parse("23/03/2018"), "Bom dia", "Acordei feliz hoje!", maria);
+        var post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu viagem", "Vou viajar para São Paulo. Abraços!", new AuthorDTO(maria));
+        var post2 = new Post(null, sdf.parse("23/03/2018"), "Bom dia", "Acordei feliz hoje!", new AuthorDTO(maria));
 
-        // Salvar objetos na colecao de usuarios
-        userRepository.saveAll(Arrays.asList(maria, alex, bob));
+        // Salvar post fazendo copia do usuario para o post (aninhado)
         postRepository.saveAll(Arrays.asList(post1, post2));
     }
 }
