@@ -60,6 +60,33 @@ public class UserService {
     }
 
     /**
+     * Update user
+     * @param obj
+     * @return newObj
+     */
+    public User update(User obj) {
+        // Instanciar obj usuario e recuperar no BD o usuario passado por id
+        User newObj = findById(obj.getId());
+
+        // Metodo para copiar os dados do obj para o newObj
+        updateData(newObj, obj);
+
+        return this.repo.save(newObj);
+    }
+
+    /**
+     * Passar dados do obj para newObj, metodo auxiliar para atualizar dados
+     *
+     * @param newObj
+     * @param obj
+     */
+    private void updateData(User newObj, User obj) {
+        // Passar dados do obj para newObj
+        newObj.setName(obj.getName());
+        newObj.setEmail(obj.getEmail());
+    }
+
+    /**
      * Metodo que ira pegar um DTO e instaciar um usuario
      *
      * OBS: Adquado seria gerar o metodo na class UserDTO, porem, para instanciar um usuario

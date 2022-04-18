@@ -1,10 +1,10 @@
 package com.weslley.workshopmongo.resources;
 
+import com.weslley.workshopmongo.domain.Post;
 import com.weslley.workshopmongo.domain.User;
 import com.weslley.workshopmongo.dto.UserDTO;
 import com.weslley.workshopmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -107,5 +107,47 @@ public class UserResource {
 
         // noContent() -> Resposta com 204, realizar uma operacao e nao retornar nada
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Update usuario
+     * End point
+     *
+     * ResponseEntity -> Retornar objeto sofisticado, encapsular e retornar respostas HTTP, com cabecalhos, erros, etc
+     *
+     * @return noContent() -> 204
+     */
+    //
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Void> update(@RequestBody UserDTO objDto, @PathVariable String id) {
+
+        // Converter objDto para usuario
+        User obj = this.service.fromDTO(objDto);
+
+        // Id da requisicao
+        obj.setId(id);
+        obj = this.service.update(obj);
+
+        // created() -> retorna 201
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Retornar posts do usuario
+     * End point
+     *
+     * ResponseEntity -> Retornar objeto sofisticado, encapsular e retornar respostas HTTP, com cabecalhos, erros, etc
+     *
+     * @return List<Post>
+     */
+    @RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+
+        // Buscar usuario por id, retornando no obj
+        User obj = this.service.findById(id);
+
+        // .ok() -> instanciar responseEntity
+        // .body() -> corpo da mensagem
+        return ResponseEntity.ok().body(obj.getPosts());
     }
 }
