@@ -23,6 +23,8 @@ public class AuthorDTO implements Serializable {
         this.name = obj.getName();
     }
 
+    public AuthorDTO() {}
+
     // Getters and Setters
 
     public String getId() {

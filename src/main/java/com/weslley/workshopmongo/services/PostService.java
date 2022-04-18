@@ -6,6 +6,7 @@ import com.weslley.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,5 +29,14 @@ public class PostService {
         Optional<Post> obj = this.repo.findById(id);
 
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+    }
+
+    /**
+     * Metodo de busca
+     * @param text
+     * @return list
+     */
+    public List<Post> findByTitle(String text) {
+        return this.repo.findByTitleContainingIgnoreCase(text);
     }
 }
