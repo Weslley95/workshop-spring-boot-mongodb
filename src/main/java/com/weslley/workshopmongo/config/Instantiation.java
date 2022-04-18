@@ -3,6 +3,7 @@ package com.weslley.workshopmongo.config;
 import com.weslley.workshopmongo.domain.Post;
 import com.weslley.workshopmongo.domain.User;
 import com.weslley.workshopmongo.dto.AuthorDTO;
+import com.weslley.workshopmongo.dto.CommentDTO;
 import com.weslley.workshopmongo.repository.PostRepository;
 import com.weslley.workshopmongo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.List;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
@@ -50,6 +52,14 @@ public class Instantiation implements CommandLineRunner {
         // Gerar carga inicial de posts
         var post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu viagem", "Vou viajar para São Paulo. Abraços!", new AuthorDTO(maria));
         var post2 = new Post(null, sdf.parse("23/03/2018"), "Bom dia", "Acordei feliz hoje!", new AuthorDTO(maria));
+
+        var c1 = new CommentDTO("Boa viagem mano!", sdf.parse("21/03/2018"), new AuthorDTO(alex));
+        var c2 = new CommentDTO("Aproveite", sdf.parse("22/03/2018"), new AuthorDTO(bob));
+        var c3 = new CommentDTO("Tenha um ótimo dia!", sdf.parse("22/03/2018"), new AuthorDTO(alex));
+
+        // Associacao do comentario com post
+        post1.getComments().addAll(Arrays.asList(c1, c2));
+        post2.getComments().add(c3);
 
         // Salvar post fazendo copia do usuario para o post (aninhado)
         postRepository.saveAll(Arrays.asList(post1, post2));
